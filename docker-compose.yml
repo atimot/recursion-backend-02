@@ -3,4 +3,6 @@ services:
     build: 
       context: .
       dockerfile: ./Dockerfile
+    volumes:
+      - .:/work
     command: sleep infinity

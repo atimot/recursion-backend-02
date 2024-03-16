@@ -1,8 +1,11 @@
 import socket
 import os
+import sys
+from faker import Faker
 
 sock = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
 server_address = "/tmp/socket_file"
+fake = Faker()
 
 if os.path.exists(server_address):
     os.unlink(server_address)
@@ -18,10 +21,10 @@ while True:
         while True:
             data = connection.recv(32)
             data_str = data.decode("utf-8")
-            print(f"<<recieved>>: {data_str}")
+            print(f"{{recv}}: {data_str}")
 
             if data:
-                response = f"processing: {data_str}"
+                response = f"hi! my name is {fake.name()}. my address is {fake.address()}. {fake.text()}"
                 connection.sendall(response.encode())
             else:
                 print(f"no data from {client_address}")
