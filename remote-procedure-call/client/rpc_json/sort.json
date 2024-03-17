@@ -1,0 +1,6 @@
+{
+    "method": "sort", 
+    "params": [["atest", "ctest", "hoge", "ahoge"]], 
+    "param_types": ["array"],
+    "id": 5
+}

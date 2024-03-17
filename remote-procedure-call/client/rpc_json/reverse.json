@@ -1,0 +1,6 @@
+{
+    "method": "reverse", 
+    "params": ["daichi.tomita"], 
+    "param_types": ["string"],
+    "id": 3
+}

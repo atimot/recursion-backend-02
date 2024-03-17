@@ -1,0 +1,6 @@
+{
+    "method": "floor", 
+    "params": [3.1415], 
+    "param_types": ["double"],
+    "id": 1
+}
