@@ -1,7 +1,6 @@
 import socket
 from data_parser import DataParser
-
-import math
+from calculator import Calculator
 
 class ConnectionHandler:
     def __init__(self, connection: socket.socket, client_address) -> None:
@@ -10,18 +9,44 @@ class ConnectionHandler:
 
     def handle_connection(self) -> None:
         try:
-            received_data = self.receive_data()
-            request_json = DataParser.parse(received_data)
+            received_data: bytes = self.receive_data()
+            request_json: dict = DataParser.parse(received_data)
+            req_method: str = request_json.get("method")
+            params: list = request_json.get("params")
+            param_types: list = request_json.get("param_types")
+            id: int = request_json.get("id")
             
-            methods = {
-                "floor" : "",
-                "nroot" : "",
-                "reverse" : "",
-                "sort" : "",
-                "validAnagram" : "",
+            methods: dict[str, callable] = {
+                "floor": Calculator.floor,
+                "nroot": Calculator.nroot,
+                "reverse": Calculator.reverse,
+                "validAnagram": Calculator.valid_anagram,
+                "sort": Calculator.sort,
             }
 
-            self.send_response("")
+            param_counts: dict[str, int] = {
+                "floor": 1,
+                "nroot": 2,
+                "reverse": 1,
+                "validAnagram": 2,
+                "sort": 1,
+            }
+
+            if methods.get(req_method) == None:
+                # メソッド名エラー
+                self.send_response("invalid method name.")
+
+            if len(params) != param_counts.get(req_method):
+                # 引数エラー
+                self.send_response("invalid arguments.")
+
+            try:
+                result = methods[req_method](*params)
+                self.send_response(str(result))
+            except ValueError:
+                # 引数の型エラー
+                self.send_response("invalid param_types.")
+            
         finally:
             self.connection.close()
 
@@ -36,31 +61,3 @@ class ConnectionHandler:
         
     def send_response(self, response: str) -> None:
         self.connection.sendall(response.encode())
-
-    # 計算関数たち
-    def floor(self, x: float) -> int:
-        return math.floor(x)
-    
-    def nroot(self, n: int, x: int) -> float:
-        return math.pow(x, 1/n)
-    
-    def reverse(self, s: str) -> str:
-        return s[::-1]
-    
-    def valid_anagram(self, s1: str, s2: str) -> bool:
-        s1 = ''.join(filter(str.isalpha, s1.lower()))
-        s2 = ''.join(filter(str.isalpha, s2.lower()))
-
-        count_s1 = {}
-        count_s2 = {}
-
-        for char in s1:
-            count_s1[char] = count_s1.get(char, 0) + 1
-        for char in s2:
-            count_s2[char] = count_s2.get(char, 0) + 1
-
-        return count_s1 == count_s2
-    
-    def sort(str_arr: list):
-        return str_arr.sort()
-

@@ -5,7 +5,7 @@ const socketPath = '/tmp/socket_file';
 const client = net.createConnection({ path: socketPath}, () => {
     console.log('connect to server');
 
-    fs.readFile('rpc_json/floor.json', (err, data) => {
+    fs.readFile('rpc_json/reverse.json', (err, data) => {
         if (err) throw err;
 
         client.write(data);

@@ -13,3 +13,6 @@ class DataParser:
 
         # response = f"response OK. {method}, {params}, {param_types}, {id}"
         return json_data
+
+
+

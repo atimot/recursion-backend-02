@@ -20,8 +20,15 @@ class Server:
         print(f"connection from {client_address}")
         handler(connection, client_address).handle_connection()
 
+    def hoge(self) -> None:
+        pass
+
+    def fuga(self) -> str:
+        pass
+
 if __name__ == "__main__":
     server_address = "/tmp/socket_file"
     server = Server(server_address)
     while True:
         server.accept_connections(ConnectionHandler)
+
