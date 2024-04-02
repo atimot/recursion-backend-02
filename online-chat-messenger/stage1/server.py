@@ -32,8 +32,6 @@ cleanup_thread.start()
 print(f"starting server at {server_address, server_port}")
 while True:
     data, address = sock.recvfrom(4096)
-    print(int.from_bytes(data[:1], "big"))
-    print(data[1:].decode())
     
     # 最終受信時刻を記録
     with clients_lock:
