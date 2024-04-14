@@ -6,3 +6,19 @@ services:
     volumes:
       - .:/work
     command: sleep infinity
+
+  client1:
+    build: 
+      context: .
+      dockerfile: ./Dockerfile
+    volumes:
+      - .:/work
+    command: sleep infinity
+
+  client2:
+    build: 
+      context: .
+      dockerfile: ./Dockerfile
+    volumes:
+      - .:/work
+    command: sleep infinity
